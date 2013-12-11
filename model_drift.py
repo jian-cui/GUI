@@ -3,7 +3,7 @@ from matplotlib.figure import Figure
 import numpy as np
 from matplotlib.backends.backend_wxagg import \
   FigureCanvasWxAgg as FigureCanvas
-from matplotlib.backends.backend_wx import NavigationToolbark2Wx
+from matplotlib.backends.backend_wx import NavigationToolbar2Wx
 
 class MplCanvasFrame(wx.Frame):
     def _init_(self):
@@ -16,6 +16,21 @@ class MplCanvasFrame(wx.Frame):
         self.axes.plot(x, y)
         self.canvas = FigureCanvas(self, wx.ID_ANY, self.figure)
         self.sizer = wx.BoxSizer(wx.VERTICAL)
+        self.sizer.Add(self.canvas, 1, wx.LEFT | wx.TOP | wx.EXPAND)
+        self.toolbar = NavigationToolbar2Wx(self.canvas)
+        self.toolbar.Realize()
+        self.sizer.Add(self.toolbar, 0, wx.LEFT | wx.EXPAND)
+        self.toolbar.Show()
+        self.SetSizer(self.sizer)
+        self.Fit()
+
+class MplApp(wx.App):
+    def OnInit(self):
+        frame = MplCanvasFrame(None)
+        self.SetTopWindow(frame)
+        frame.Show(True)
+        return True
+
 #def load(event):
 #    file = open(filename.GetValue())
 #    contents.SetValue(file.read())
@@ -25,11 +40,11 @@ class MplCanvasFrame(wx.Frame):
 #    file = open(filename.GetValue(), 'w')
 #    file.write(contents.GetValue())
 #    file.close()
-    
-app = wx.PySimpleApp()
-frame = MplCanvasFrame(None)
+
+mplapp = MplApp(False)
+#frame = MplCanvasFrame(None)
 #frame.show(True)
-app.MainLoop()
+mplapp.MainLoop()
 #app = wx.App()
 #win = wx.Frame(None, title="Simple Editor", size=(410, 335))
 #
