@@ -1,35 +1,34 @@
 import wx
 from matplotlib.figure import Figure
 import numpy as np
-from matplotlib.backends.backend_wxagg import \
-  FigureCanvasWxAgg as FigureCanvas
+from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 from matplotlib.backends.backend_wx import NavigationToolbar2Wx
 
 class MplCanvasFrame(wx.Frame):
-    def _init_(self):
-        wx.Frame._init_(self, None, wx.ID_ANY, size=(600, 400),
+    def _init_(self,parent):
+        wx.Frame._init_(self, parent, size=(600, 400),
                         title='Matplotlib Figure with Navigation Toolbar')
-        self.figure = Figure()#figsize=(6,4), dpi=100)
+        self.figure = Figure()
         self.axes = self.figure.add_subplot(111)
         x = np.arange(0, 6, .01)
         y = np.sin(x**2)*np.exp(-x)
         self.axes.plot(x, y)
-        self.canvas = FigureCanvas(self, wx.ID_ANY, self.figure)
-        self.sizer = wx.BoxSizer(wx.VERTICAL)
-        self.sizer.Add(self.canvas, 1, wx.LEFT | wx.TOP | wx.EXPAND)
-        self.toolbar = NavigationToolbar2Wx(self.canvas)
-        self.toolbar.Realize()
-        self.sizer.Add(self.toolbar, 0, wx.LEFT | wx.EXPAND)
-        self.toolbar.Show()
-        self.SetSizer(self.sizer)
-        self.Fit()
-
-class MplApp(wx.App):
-    def OnInit(self):
-        frame = MplCanvasFrame(None)
-        self.SetTopWindow(frame)
-        frame.Show(True)
-        return True
+        self.canvas = FigureCanvas(self, -1, self.figure)
+#        self.sizer = wx.BoxSizer(wx.VERTICAL)
+#        self.sizer.Add(self.canvas, 1, wx.LEFT | wx.TOP | wx.EXPAND)
+#        self.toolbar = NavigationToolbar2Wx(self.canvas)
+#        self.toolbar.Realize()
+#        self.sizer.Add(self.toolbar, 0, wx.LEFT | wx.EXPAND)
+#        self.toolbar.Show()
+#        self.SetSizer(self.sizer)
+#        self.Fit()
+#
+#class MplApp(wx.App):
+#    def OnInit(self):
+#        frame = MplCanvasFrame(None)
+#        self.SetTopWindow(frame)
+#        frame.Show(True)
+#        return True
 
 #def load(event):
 #    file = open(filename.GetValue())
@@ -41,10 +40,14 @@ class MplApp(wx.App):
 #    file.write(contents.GetValue())
 #    file.close()
 
-mplapp = MplApp(False)
+app = wx.App(redirect = False)
+frame = MplCanvasFrame(None)
+frame.Show()
+app.MainLoop()
+#mplapp = MplApp(False)
 #frame = MplCanvasFrame(None)
 #frame.show(True)
-mplapp.MainLoop()
+#mplapp.MainLoop()
 #app = wx.App()
 #win = wx.Frame(None, title="Simple Editor", size=(410, 335))
 #
