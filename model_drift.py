@@ -5,8 +5,8 @@ from matplotlib.backends.backend_wxagg import FigureCanvasWxAgg as FigureCanvas
 from matplotlib.backends.backend_wx import NavigationToolbar2Wx
 
 class MplCanvasFrame(wx.Frame):
-    def _init_(self,parent):
-        wx.Frame._init_(self, parent, size=(600, 400),
+    def __init__(self,parent):
+        wx.Frame.__init__(self, parent, size=(600, 400),
                         title='Matplotlib Figure with Navigation Toolbar')
         self.figure = Figure()
         self.axes = self.figure.add_subplot(111)
